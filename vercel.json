@@ -2,15 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "Backend/server.js",
+      "src": "Backend/package.json",
       "use": "@vercel/node"
-    },
-    {
-      "src": "Mehndi Web/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
     }
   ],
   "routes": [
@@ -19,8 +12,12 @@
       "dest": "Backend/server.js"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "Mehndi Web/$1"
+      "dest": "/index.html"
     }
-  ]
+  ],
+  "outputDirectory": "Mehndi Web/dist"
 }

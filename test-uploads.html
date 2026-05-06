@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploads Debug Test</title>
+</head>
+<body>
+    <h1>Testing Uploads Debug Endpoint</h1>
+    <button onclick="testUploads()">Test Uploads</button>
+    <div id="result"></div>
+    
+    <script>
+        async function testUploads() {
+            try {
+                const response = await fetch('http://localhost:5000/api/debug/uploads');
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                console.log('Uploads debug:', data);
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Test the specific image URL
+        async function testImage() {
+            const img = new Image();
+            img.onload = () => console.log('✅ Image loaded successfully');
+            img.onerror = () => console.error('❌ Image failed to load');
+            img.src = 'http://localhost:5000/uploads/1778051022033-411640096.png';
+        }
+        
+        testUploads();
+        testImage();
+    </script>
+</body>
+</html>

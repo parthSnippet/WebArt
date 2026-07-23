@@ -48,26 +48,17 @@ app.use(helmet({
   },
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
-  message: {
-    success: false,
-    message: 'Too many requests from this IP, please try again later.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+const isDev = process.env.NODE_ENV !== 'production';
 
-// Stricter rate limiting for auth routes
+// Stricter rate limiting for auth routes only
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: isDev ? 1000 : 10,
   message: {
     success: false,
     message: 'Too many authentication attempts, please try again later.'
-  }
+  },
+  skip: (req) => req.path === '/logout' || req.path === '/refresh',
 });
 
 // Compression middleware
@@ -107,15 +98,19 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = process.env.NODE_ENV === 'production'
       ? [process.env.CLIENT_URL]
-      : ['http://localhost:5173', 'http://localhost:3000'];
-    
-    // Allow requests with no origin (mobile apps, etc.)
+      : [
+          'http://localhost:5173',
+          'http://localhost:3000',
+          'http://127.0.0.1:5173',
+          process.env.CLIENT_URL_LOCAL, // local network IP
+        ].filter(Boolean);
+
     if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error(`CORS blocked: ${origin}`));
     }
   },
   credentials: true,
@@ -129,9 +124,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// Apply rate limiting
-app.use('/api/', limiter);
-app.use('/api/auth', authLimiter);
+// Apply rate limiting only on auth routes
+app.use('/api/auth', (req, res, next) => {
+  if (req.path === '/logout' || req.path === '/refresh') return next();
+  return authLimiter(req, res, next);
+});
 
 // Serve static files from uploads directory
 const uploadsPath = path.join(__dirname, 'uploads');

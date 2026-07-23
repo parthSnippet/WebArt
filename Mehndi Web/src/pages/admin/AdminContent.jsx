@@ -47,59 +47,59 @@ const AdminContent = () => {
     }
   };
 
-  const inputClass = "w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-pink-500 transition-all";
+  const inputClass = "w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-h-full">
       <div>
-        <h1 className="text-3xl font-black text-white">Content Manager</h1>
-        <p className="text-white/50 text-sm mt-1">Edit website sections dynamically</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Content Manager</h1>
+        <p className="text-gray-600 text-sm mt-1">Edit website sections dynamically</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {sections.map((section) => (
-          <div key={section} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-5">
+          <div key={section} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-bold capitalize text-lg">{section} Section</h2>
-              <button onClick={() => startEdit(section)} className="bg-pink-500/20 text-pink-400 p-2 rounded-lg hover:bg-pink-500/40 transition-all">
+              <h2 className="text-gray-800 font-bold capitalize text-lg">{section} Section</h2>
+              <button onClick={() => startEdit(section)} className="bg-blue-100 text-blue-700 p-2 rounded-lg hover:bg-blue-200 transition-all border border-blue-200">
                 <FaEdit />
               </button>
             </div>
             {contents[section]?.imageUrl && (
-              <img src={contents[section].imageUrl} alt="" className="w-full h-32 object-cover rounded-xl mb-3" />
+              <img src={contents[section].imageUrl} alt="" className="w-full h-32 object-cover rounded-xl mb-3 border border-gray-200" />
             )}
-            <p className="text-white font-semibold mb-1">{contents[section]?.title || <span className="text-white/30 italic">No title set</span>}</p>
-            <p className="text-white/50 text-sm line-clamp-2">{contents[section]?.description || <span className="italic">No description set</span>}</p>
+            <p className="text-gray-800 font-semibold mb-1">{contents[section]?.title || <span className="text-gray-400 italic">No title set</span>}</p>
+            <p className="text-gray-600 text-sm line-clamp-2">{contents[section]?.description || <span className="italic">No description set</span>}</p>
           </div>
         ))}
       </div>
 
       {editing && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setEditing(null)}>
-          <div className="bg-purple-900/90 border border-white/20 rounded-2xl p-8 max-w-lg w-full" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setEditing(null)}>
+          <div className="bg-white border border-gray-200 rounded-2xl p-8 max-w-lg w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white capitalize">Edit {editing} Section</h2>
-              <button onClick={() => setEditing(null)} className="text-white/50 hover:text-white"><FaTimes /></button>
+              <h2 className="text-2xl font-bold text-gray-800 capitalize">Edit {editing} Section</h2>
+              <button onClick={() => setEditing(null)} className="text-gray-400 hover:text-gray-600"><FaTimes /></button>
             </div>
             <div className="space-y-4">
               <div>
-                <label className="block text-white/60 text-sm mb-2">Title</label>
+                <label className="block text-gray-700 text-sm mb-2 font-semibold">Title</label>
                 <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Section title" className={inputClass} />
               </div>
               <div>
-                <label className="block text-white/60 text-sm mb-2">Description</label>
+                <label className="block text-gray-700 text-sm mb-2 font-semibold">Description</label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} placeholder="Section description" className={`${inputClass} resize-none`} />
               </div>
               <div>
-                <label className="block text-white/60 text-sm mb-2 flex items-center gap-2"><FaImage /> Image URL</label>
+                <label className="block text-gray-700 text-sm mb-2 font-semibold flex items-center gap-2"><FaImage /> Image URL</label>
                 <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://..." className={inputClass} />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} disabled={loading} className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-all disabled:opacity-60">
+              <button onClick={handleSave} disabled={loading} className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-all disabled:opacity-60 shadow-md">
                 <FaSave /> {loading ? 'Saving...' : 'Save Changes'}
               </button>
-              <button onClick={() => setEditing(null)} className="flex-1 bg-white/10 text-white py-3 rounded-xl font-bold hover:bg-white/20 transition-all">
+              <button onClick={() => setEditing(null)} className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all">
                 Cancel
               </button>
             </div>

@@ -12,7 +12,7 @@ const DesignCard = ({ design }) => {
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/10 hover:-translate-y-1 group border border-white/20">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 group border border-blue-100">
       {/* Image Container */}
       <div className="relative overflow-hidden h-48">
         <img 
@@ -40,7 +40,7 @@ const DesignCard = ({ design }) => {
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
           <Link
             to={`/designs/${design._id}`}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:shadow-lg hover:shadow-pink-500/30 transition-all flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0"
+            className="bg-blue-400 text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-blue-500 transition-all flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0"
           >
             <FaEye className="text-sm" /> View
           </Link>
@@ -50,7 +50,7 @@ const DesignCard = ({ design }) => {
       {/* Content */}
       <div className="p-4">
         {/* Title */}
-        <h3 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-pink-500 group-hover:to-purple-600 transition-all">
+        <h3 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1 group-hover:text-blue-600 transition-all">
           {design.title}
         </h3>
         
@@ -68,7 +68,7 @@ const DesignCard = ({ design }) => {
           </div>
           <Link
             to={`/book-appointment?design=${design._id}`}
-            className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 font-semibold text-sm hover:from-purple-600 hover:to-pink-500 transition-all"
+            className="text-blue-600 font-semibold text-sm hover:text-blue-700 transition-all"
           >
             Book →
           </Link>

@@ -15,55 +15,55 @@ const AdminUsers = () => {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-h-full">
       <div>
-        <h1 className="text-3xl font-black text-white">Users</h1>
-        <p className="text-white/50 text-sm mt-1">{users.length} registered users</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Users</h1>
+        <p className="text-gray-600 text-sm mt-1">{users.length} registered users</p>
       </div>
 
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
         {loading ? (
-          <div className="text-center py-12 text-white/40">Loading users...</div>
+          <div className="text-center py-12 text-gray-400">Loading users...</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10">
+                <tr className="border-b border-gray-200 bg-gray-50">
                   {['User', 'Email', 'Role', 'Joined'].map((h) => (
-                    <th key={h} className="px-5 py-4 text-left text-white/60 font-semibold text-sm">{h}</th>
+                    <th key={h} className="px-5 py-4 text-left text-gray-700 font-semibold text-sm">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u._id} className="border-b border-white/5 hover:bg-white/5 transition-all">
+                  <tr key={u._id} className="border-b border-gray-100 hover:bg-gray-50 transition-all">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-black font-bold text-sm flex-shrink-0 shadow-md">
                           {u.name?.[0]?.toUpperCase()}
                         </div>
-                        <span className="text-white font-semibold">{u.name}</span>
+                        <span className="text-gray-800 font-semibold">{u.name}</span>
                       </div>
                     </td>
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-2 text-white/60 text-sm">
-                        <FaEnvelope className="text-pink-400" /> {u.email}
+                      <div className="flex items-center gap-2 text-gray-600 text-sm">
+                        <FaEnvelope className="text-blue-500" /> {u.email}
                       </div>
                     </td>
                     <td className="px-5 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit ${
-                        u.role === 'admin' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-purple-500/20 text-purple-400'
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 w-fit border ${
+                        u.role === 'admin' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-blue-100 text-blue-700 border-blue-200'
                       }`}>
                         {u.role === 'admin' ? <FaCrown /> : <FaUser />} {u.role}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-white/50 text-sm">
+                    <td className="px-5 py-4 text-gray-600 text-sm">
                       {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}
                     </td>
                   </tr>
                 ))}
                 {users.length === 0 && (
-                  <tr><td colSpan={4} className="text-center py-12 text-white/40">No users found</td></tr>
+                  <tr><td colSpan={4} className="text-center py-12 text-gray-400">No users found</td></tr>
                 )}
               </tbody>
             </table>

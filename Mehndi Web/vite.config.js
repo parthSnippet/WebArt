@@ -11,15 +11,15 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: mode === 'development',
-      minify: mode === 'production' ? 'terser' : false,
+      minify: mode === 'production' ? 'oxc' : false,
       target: 'es2015',
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            router: ['react-router-dom'],
-            redux: ['@reduxjs/toolkit', 'react-redux'],
-            ui: ['react-hot-toast', 'react-icons']
+          manualChunks: (id) => {
+            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'vendor';
+            if (id.includes('node_modules/react-router-dom')) return 'router';
+            if (id.includes('node_modules/@reduxjs') || id.includes('node_modules/react-redux')) return 'redux';
+            if (id.includes('node_modules/react-hot-toast') || id.includes('node_modules/react-icons')) return 'ui';
           }
         }
       },

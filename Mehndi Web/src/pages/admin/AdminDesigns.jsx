@@ -14,24 +14,8 @@ const AdminDesigns = () => {
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    console.log('🎨 AdminDesigns: Fetching designs with filter:', filter);
     dispatch(fetchDesigns(filter === 'all' ? '' : filter));
   }, [filter, dispatch]);
-
-  // Add logging for designs data
-  useEffect(() => {
-    console.log('🖼️ AdminDesigns: Designs data updated:', {
-      count: designs?.length || 0,
-      loading,
-      designs: designs?.map(d => ({
-        id: d._id,
-        title: d.title,
-        imageUrl: d.imageUrl,
-        category: d.category,
-        fullDesign: d
-      }))
-    });
-  }, [designs, loading]);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this design?')) return;
@@ -46,15 +30,17 @@ const AdminDesigns = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 min-h-full">
+
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white">Manage Designs</h1>
-          <p className="text-white/50 text-sm mt-1">{designs.length} designs total</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Manage Designs</h1>
+          <p className="text-gray-500 text-sm mt-1">{designs.length} Total</p>
         </div>
         <Link
           to="/admin/designs/new"
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:shadow-lg hover:shadow-pink-500/30 transition-all"
+          className="flex items-center gap-2 bg-blue-500 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-600 transition-all shadow-sm w-full sm:w-auto justify-center"
         >
           <FaPlus /> Add Design
         </Link>
@@ -68,8 +54,8 @@ const AdminDesigns = () => {
             onClick={() => setFilter(c)}
             className={`px-4 py-2 rounded-xl font-semibold text-sm capitalize transition-all ${
               filter === c
-                ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
-                : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                ? 'bg-blue-500 text-white shadow-md'
+                : 'bg-white border border-gray-200 text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300'
             }`}
           >
             {c}
@@ -77,79 +63,107 @@ const AdminDesigns = () => {
         ))}
       </div>
 
-      {/* Table */}
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="px-5 py-4 text-left text-white/60 font-semibold text-sm">Image</th>
-                <th className="px-5 py-4 text-left text-white/60 font-semibold text-sm">Title</th>
-                <th className="px-5 py-4 text-left text-white/60 font-semibold text-sm">Category</th>
-                <th className="px-5 py-4 text-left text-white/60 font-semibold text-sm">Description</th>
-                <th className="px-5 py-4 text-left text-white/60 font-semibold text-sm">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {designs.map((d) => (
-                <tr key={d._id} className="border-b border-white/5 hover:bg-white/5 transition-all">
-                  <td className="px-5 py-4">
-                    {console.log('🖼️ Image Debug for design:', {
-                      id: d._id,
-                      title: d.title,
-                      imageUrl: d.imageUrl,
-                      fullPath: d.imageUrl ? `http://localhost:5000${d.imageUrl}` : 'No imageUrl',
-                      design: d
-                    })}
-                    <img 
-                      src={d.imageUrl} 
-                      alt={d.title} 
-                      className="w-14 h-14 object-cover rounded-xl"
-                      onLoad={() => console.log('✅ Image loaded successfully:', d.imageUrl)}
-                      onError={(e) => {
-                        console.error('❌ Image failed to load:', {
-                          src: e.target.src,
-                          imageUrl: d.imageUrl,
-                          designId: d._id,
-                          error: e
-                        });
-                      }}
-                    />
-                  </td>
-                  <td className="px-5 py-4 text-white font-semibold">{d.title}</td>
-                  <td className="px-5 py-4">
-                    <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold capitalize">
+      {designs.length === 0 ? (
+        <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center text-gray-400 shadow-sm">
+          No designs found
+        </div>
+      ) : (
+        <>
+          {/* ── MOBILE CARDS (hidden on lg+) ── */}
+          <div className="flex flex-col gap-4 lg:hidden">
+            {designs.map((d) => (
+              <div key={d._id} className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <div className="flex items-center gap-4 p-4">
+                  {/* Image */}
+                  <img
+                    src={d.imageUrl}
+                    alt={d.title}
+                    className="w-20 h-20 object-cover rounded-xl border border-gray-200 flex-shrink-0"
+                  />
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-gray-800 font-bold text-base truncate">{d.title}</p>
+                    <span className="inline-block mt-1 bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full text-xs font-bold capitalize border border-blue-200">
                       {d.category}
                     </span>
-                  </td>
-                  <td className="px-5 py-4 text-white/60 text-sm">{d.description?.substring(0, 50)}...</td>
-                  <td className="px-5 py-4">
-                    <div className="flex gap-2">
-                      <Link
-                        to={`/admin/designs/edit/${d._id}`}
-                        className="bg-blue-500/20 text-blue-400 p-2 rounded-lg hover:bg-blue-500/40 transition-all"
-                      >
-                        <FaEdit />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(d._id)}
-                        className="bg-red-500/20 text-red-400 p-2 rounded-lg hover:bg-red-500/40 transition-all"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {designs.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="text-center py-12 text-white/40">No designs found</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                    <p className="text-gray-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+                      {d.description}
+                    </p>
+                  </div>
+                </div>
+                {/* Actions */}
+                <div className="flex border-t border-gray-100">
+                  <Link
+                    to={`/admin/designs/edit/${d._id}`}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 text-blue-600 font-semibold text-sm hover:bg-blue-50 transition-all border-r border-gray-100"
+                  >
+                    <FaEdit /> Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(d._id)}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 text-red-600 font-semibold text-sm hover:bg-red-50 transition-all"
+                  >
+                    <FaTrash /> Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── DESKTOP TABLE (hidden below lg) ── */}
+          <div className="hidden lg:block bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    {['Image', 'Title', 'Category', 'Description', 'Actions'].map((h) => (
+                      <th key={h} className="px-5 py-4 text-left text-gray-700 font-semibold text-sm">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {designs.map((d) => (
+                    <tr key={d._id} className="border-b border-gray-100 hover:bg-gray-50 transition-all">
+                      <td className="px-5 py-4">
+                        <img
+                          src={d.imageUrl}
+                          alt={d.title}
+                          className="w-14 h-14 object-cover rounded-xl border border-gray-200"
+                        />
+                      </td>
+                      <td className="px-5 py-4 text-gray-800 font-semibold">{d.title}</td>
+                      <td className="px-5 py-4">
+                        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold capitalize border border-blue-200">
+                          {d.category}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-gray-600 text-sm max-w-xs">
+                        {d.description?.substring(0, 60)}...
+                      </td>
+                      <td className="px-5 py-4">
+                        <div className="flex gap-2">
+                          <Link
+                            to={`/admin/designs/edit/${d._id}`}
+                            className="bg-blue-100 text-blue-700 p-2 rounded-lg hover:bg-blue-200 transition-all border border-blue-200"
+                          >
+                            <FaEdit />
+                          </Link>
+                          <button
+                            onClick={() => handleDelete(d._id)}
+                            className="bg-red-100 text-red-700 p-2 rounded-lg hover:bg-red-200 transition-all border border-red-200"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

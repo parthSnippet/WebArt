@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+/* Force load Tailwind styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global background fix */
+body {
+  background-color: #f8fafc !important;
+  min-height: 100vh;
+}
+
+#root {
+  background-color: #f8fafc !important;
+  min-height: 100vh;
+}
+
+/* Ensure React Icons load properly */
+.react-icons {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Force sidebar styles */
+.admin-sidebar {
+  background: white !important;
+  border-right: 1px solid #e5e7eb !important;
+}
+
+.admin-sidebar .nav-item {
+  color: #374151 !important;
+}
+
+.admin-sidebar .nav-item.active {
+  background: linear-gradient(to right, #3b82f6, #2563eb) !important;
+  color: white !important;
+}
+
+.admin-sidebar .nav-item.active * {
+  color: white !important;
+}
+
+/* Admin layout background */
+.admin-layout {
+  background-color: #f8fafc !important;
+  min-height: 100vh !important;
+}
+
+/* Public layout background */
+.public-layout {
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #f0f9ff 100%) !important;
+  min-height: 100vh !important;
+}

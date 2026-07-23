@@ -54,7 +54,7 @@ const AdminDashboard = () => {
       title: 'Total Designs', 
       value: designs.length, 
       icon: FaImages, 
-      gradient: 'from-pink-500 to-rose-600', 
+      gradient: 'from-blue-500 to-blue-600', 
       link: '/admin/designs',
       change: '+12%',
       changeType: 'up'
@@ -63,7 +63,7 @@ const AdminDashboard = () => {
       title: 'Total Bookings', 
       value: appointments.length, 
       icon: FaCalendarAlt, 
-      gradient: 'from-purple-500 to-indigo-600', 
+      gradient: 'from-indigo-500 to-indigo-600', 
       link: '/admin/appointments',
       change: '+8%',
       changeType: 'up'
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
       title: 'Pending', 
       value: pending, 
       icon: FaClock, 
-      gradient: 'from-yellow-500 to-orange-600', 
+      gradient: 'from-yellow-500 to-orange-500', 
       link: '/admin/appointments',
       change: '-5%',
       changeType: 'down'
@@ -94,35 +94,32 @@ const AdminDashboard = () => {
       icon: FaPlus, 
       label: 'Add New Design',
       description: 'Upload a new design to gallery',
-      gradient: 'from-pink-500 to-purple-600',
-      hoverGradient: 'hover:from-pink-600 hover:to-purple-700'
+      gradient: 'from-blue-500 to-blue-600'
     },
     { 
       to: '/admin/appointments', 
       icon: FaEye, 
       label: 'Manage Bookings',
       description: 'Review and approve appointments',
-      gradient: 'from-blue-500 to-cyan-600',
-      hoverGradient: 'hover:from-blue-600 hover:to-cyan-700'
+      gradient: 'from-indigo-500 to-indigo-600'
     },
     { 
       to: '/admin/content', 
       icon: FaEdit, 
       label: 'Edit Content',
       description: 'Update website content',
-      gradient: 'from-emerald-500 to-teal-600',
-      hoverGradient: 'hover:from-emerald-600 hover:to-teal-700'
+      gradient: 'from-cyan-500 to-cyan-600'
     },
   ];
 
   return (
-    <div className="space-y-6 sm:space-y-8 p-4 sm:p-6 lg:p-8">
+    <div className="space-y-4 md:space-y-6 lg:space-y-8 min-h-full">
       
       {/* Debug Panel Toggle */}
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         <button
           onClick={() => setShowDebugger(!showDebugger)}
-          className="flex items-center gap-2 bg-red-500/20 text-red-400 px-4 py-2 rounded-xl font-semibold hover:bg-red-500/30 transition-all"
+          className="flex items-center gap-2 bg-red-500/20 text-red-400 px-3 md:px-4 py-2 rounded-lg md:rounded-xl font-semibold hover:bg-red-500/30 transition-all text-sm md:text-base"
         >
           <FaBug /> {showDebugger ? 'Hide' : 'Show'} Image Debugger
         </button>
@@ -130,47 +127,63 @@ const AdminDashboard = () => {
 
       {/* Debug Panel */}
       {showDebugger && (
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <ImageDebugger />
         </div>
       )}
 
       {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-3xl sm:text-4xl animate-bounce">👑</span>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white">Admin Dashboard</h1>
+      <div className="mb-4 md:mb-6 lg:mb-8">
+        <div className="flex items-center gap-2 md:gap-3 mb-2">
+          {/* <span className="text-2xl md:text-3xl lg:text-4xl">📊</span> */}
+          {/* <h1 className="text-xl md:text-3xl lg:text-5xl font-black text-gray-900">Dashboard Overview</h1> */}
         </div>
-        <p className="text-white/60 text-sm sm:text-base">Manage your glam empire ✨</p>
+        {/* <p className="text-gray-700 text-sm md:text-base lg:text-lg font-medium">Welcome back! Here's what's happening today ✨</p> */}
       </div>
 
       {/* Stats Grid - Mobile Responsive */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 lg:gap-4">
         {stats.map(({ title, value, icon: Icon, gradient, link, change, changeType }, index) => (
           <Link
             key={title}
             to={link}
-            className="group relative overflow-hidden bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:border-pink-500/50 hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/20"
+            className="group relative overflow-hidden bg-white border-2 border-gray-200 rounded-lg p-2 md:p-3 lg:p-4 hover:border-blue-400 hover:shadow-lg transition-all duration-300 shadow-sm"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             {/* Background Gradient Overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
             
             {/* Icon */}
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-              <Icon className="text-white text-sm sm:text-base" />
+            <div 
+              className={`w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center mb-2 md:mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md`}
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '6px',
+                background: gradient.includes('blue') ? 'linear-gradient(to bottom right, #3b82f6, #2563eb)' :
+                           gradient.includes('indigo') ? 'linear-gradient(to bottom right, #6366f1, #4f46e5)' :
+                           gradient.includes('yellow') ? 'linear-gradient(to bottom right, #eab308, #f59e0b)' :
+                           'linear-gradient(to bottom right, #10b981, #059669)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '8px',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+              }}
+            >
+              <Icon className="text-white text-xs md:text-sm" style={{ color: 'white', fontSize: '14px' }} />
             </div>
             
             {/* Content */}
             <div className="relative z-10">
-              <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 group-hover:text-pink-200 transition-colors">
+              <p className="text-lg md:text-xl lg:text-2xl font-black text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
                 {value}
               </p>
-              <p className="text-white/60 font-semibold text-xs sm:text-sm mb-1">{title}</p>
+              <p className="text-gray-700 font-semibold text-xs md:text-sm mb-1 md:mb-2">{title}</p>
               
               {/* Change Indicator */}
               <div className={`flex items-center gap-1 text-xs font-bold ${
-                changeType === 'up' ? 'text-green-400' : 'text-red-400'
+                changeType === 'up' ? 'text-green-600' : 'text-red-600'
               }`}>
                 {changeType === 'up' ? <FaArrowUp /> : <FaArrowDown />}
                 <span>{change}</span>
@@ -182,34 +195,44 @@ const AdminDashboard = () => {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-          <FaFire className="text-orange-400" /> Quick Actions
+        <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-800 mb-3 md:mb-4 lg:mb-6 flex items-center gap-2">
+          <FaFire className="text-orange-500" /> Quick Actions
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
-          {quickActions.map(({ to, icon: Icon, label, description, gradient, hoverGradient }, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          {quickActions.map(({ to, icon: Icon, label, description, gradient }, index) => (
             <Link
               key={to}
               to={to}
-              className={`group relative overflow-hidden bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-center hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl ${hoverGradient}`}
+              className="group relative overflow-hidden bg-white border-2 border-gray-200 rounded-lg p-3 md:p-4 text-center hover:border-blue-400 hover:shadow-lg transition-all duration-300 shadow-sm"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-white rounded-full -translate-y-10 translate-x-10" />
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-white rounded-full translate-y-8 -translate-x-8" />
-              </div>
-              
               {/* Icon */}
-              <div className={`w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-2xl`}>
-                <Icon className="text-lg sm:text-xl text-white" />
+              <div 
+                className={`w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 md:mb-3 rounded-lg md:rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md`}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '8px',
+                  background: gradient.includes('blue') ? 'linear-gradient(to bottom right, #3b82f6, #2563eb)' :
+                             gradient.includes('indigo') ? 'linear-gradient(to bottom right, #6366f1, #4f46e5)' :
+                             gradient.includes('cyan') ? 'linear-gradient(to bottom right, #06b6d4, #0891b2)' :
+                             'linear-gradient(to bottom right, #3b82f6, #2563eb)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px auto',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                <Icon className="text-base md:text-lg text-white" style={{ color: 'white', fontSize: '18px' }} />
               </div>
               
               {/* Content */}
               <div className="relative z-10">
-                <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2 group-hover:text-pink-200 transition-colors">
+                <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
                   {label}
                 </h3>
-                <p className="text-white/60 text-xs sm:text-sm group-hover:text-white/80 transition-colors">
+                <p className="text-gray-600 text-xs md:text-sm group-hover:text-gray-700 transition-colors">
                   {description}
                 </p>
               </div>
@@ -219,46 +242,46 @@ const AdminDashboard = () => {
       </div>
 
       {/* Recent Bookings */}
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 sm:mb-5">
-          <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-            <FaChartLine className="text-green-400" /> Recent Bookings
+      <div className="bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <FaChartLine className="text-blue-600" /> Recent Bookings
           </h2>
           <Link 
             to="/admin/appointments"
-            className="text-pink-400 hover:text-pink-300 text-sm font-semibold transition-colors flex items-center gap-1"
+            className="text-blue-600 hover:text-blue-700 text-sm font-semibold transition-colors flex items-center gap-1 bg-blue-50 px-3 py-2 rounded-lg hover:bg-blue-100"
           >
             View All <FaArrowRight className="text-xs" />
           </Link>
         </div>
         
-        <div className="space-y-2 sm:space-y-3">
+        <div className="space-y-3">
           {appointments.slice(0, 5).map((a, index) => (
             <div
               key={a._id}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 py-2 sm:py-3 px-3 sm:px-4 bg-white/5 rounded-lg sm:rounded-xl hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-pink-500/30"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3 px-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-all duration-300 border border-gray-100 hover:border-blue-200"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* User Info */}
-              <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-black font-bold text-sm flex-shrink-0 shadow-md">
                   {a.userId?.name?.[0]?.toUpperCase() || 'U'}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-white font-semibold text-xs sm:text-sm truncate">
+                  <p className="text-gray-800 font-semibold text-sm truncate">
                     {a.userId?.name || 'Unknown User'}
                   </p>
-                  <p className="text-white/50 text-xs">
+                  <p className="text-gray-500 text-xs">
                     {format(new Date(a.date), 'MMM dd, yyyy')} at {a.time}
                   </p>
                 </div>
               </div>
               
               {/* Status Badge */}
-              <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize flex items-center gap-1 w-fit ${
-                a.status === 'approved' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
-                a.status === 'cancelled' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+              <span className={`px-3 py-1.5 rounded-full text-xs font-bold capitalize flex items-center gap-1 w-fit ${
+                a.status === 'approved' ? 'bg-green-100 text-green-700 border border-green-200' :
+                a.status === 'cancelled' ? 'bg-red-100 text-red-700 border border-red-200' :
+                'bg-yellow-100 text-yellow-700 border border-yellow-200'
               }`}>
                 {a.status === 'approved' ? <FaCheckCircle /> : 
                  a.status === 'cancelled' ? <FaUsers /> : <FaClock />}
@@ -268,9 +291,9 @@ const AdminDashboard = () => {
           ))}
           
           {appointments.length === 0 && (
-            <div className="text-center py-6 sm:py-8">
-              <FaCalendarAlt className="text-3xl sm:text-4xl text-white/20 mx-auto mb-3" />
-              <p className="text-white/40 text-xs sm:text-sm">No bookings yet</p>
+            <div className="text-center py-8">
+              <FaCalendarAlt className="text-4xl text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-400 text-sm">No bookings yet</p>
             </div>
           )}
         </div>

@@ -56,18 +56,18 @@ const DesignForm = () => {
     }
   };
 
-  const inputClass = "w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-pink-500 transition-all";
+  const inputClass = "w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all";
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl space-y-6 min-h-full">
       <div>
-        <h1 className="text-3xl font-black text-white">{id ? 'Edit Design' : 'Add New Design'}</h1>
-        <p className="text-white/50 text-sm mt-1">{id ? 'Update design details' : 'Upload a new design to the gallery'}</p>
+        {/* <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">{id ? 'Edit Design' : 'Add New Design'}</h1> */}
+        <p className="text-gray-600 text-sm mt-1">{id ? 'Update design details' : 'Upload a new design to the gallery'}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-2xl p-6 space-y-5 shadow-sm">
         <div>
-          <label className="block text-white/70 font-semibold mb-2 text-sm">Title *</label>
+          <label className="block text-gray-700 font-semibold mb-2 text-sm">Title *</label>
           <input
             type="text" name="title" value={formData.title} required placeholder="Enter design title"
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -76,20 +76,20 @@ const DesignForm = () => {
         </div>
 
         <div>
-          <label className="block text-white/70 font-semibold mb-2 text-sm">Category *</label>
+          <label className="block text-gray-700 font-semibold mb-2 text-sm">Category *</label>
           <select
             name="category" value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             className={inputClass}
           >
             {categories.map((c) => (
-              <option key={c} value={c} className="bg-purple-900 capitalize">{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+              <option key={c} value={c} className="bg-white capitalize">{c.charAt(0).toUpperCase() + c.slice(1)}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-white/70 font-semibold mb-2 text-sm">Description *</label>
+          <label className="block text-gray-700 font-semibold mb-2 text-sm">Description *</label>
           <textarea
             name="description" value={formData.description} required rows={4} placeholder="Describe this design..."
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -98,15 +98,15 @@ const DesignForm = () => {
         </div>
 
         <div>
-          <label className="block text-white/70 font-semibold mb-2 text-sm">Image {!id && '*'}</label>
-          <label className="flex items-center gap-3 bg-white/5 border-2 border-dashed border-white/20 rounded-xl p-6 cursor-pointer hover:border-pink-500/50 transition-all">
-            <FaUpload className="text-pink-400 text-xl" />
-            <span className="text-white/60">{image ? image.name : 'Click to upload image'}</span>
+          <label className="block text-gray-700 font-semibold mb-2 text-sm">Image {!id && '*'}</label>
+          <label className="flex items-center gap-3 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all">
+            <FaUpload className="text-blue-500 text-xl" />
+            <span className="text-gray-600">{image ? image.name : 'Click to upload image'}</span>
             <input type="file" accept="image/*" onChange={handleImageChange} required={!id} className="hidden" />
           </label>
           {preview && (
             <div className="mt-4 relative inline-block">
-              <img src={preview} alt="Preview" className="w-48 h-48 object-cover rounded-xl border border-white/20" />
+              <img src={preview} alt="Preview" className="w-48 h-48 object-cover rounded-xl border border-gray-200 shadow-md" />
               <div className="absolute top-2 right-2 bg-black/50 rounded-lg p-1">
                 <FaImage className="text-white text-xs" />
               </div>
@@ -117,13 +117,13 @@ const DesignForm = () => {
         <div className="flex gap-3 pt-2">
           <button
             type="submit" disabled={loading}
-            className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-pink-500/30 transition-all disabled:opacity-60"
+            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-black py-3 rounded-xl border-2 font-bold hover:shadow-lg hover:shadow-blue-500/30 transition-all disabled:opacity-60 shadow-md"
           >
             {loading ? 'Saving...' : id ? 'Update Design' : 'Create Design'}
           </button>
           <button
             type="button" onClick={() => navigate('/admin/designs')}
-            className="flex-1 bg-white/10 text-white py-3 rounded-xl font-bold hover:bg-white/20 transition-all"
+            className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl border-2 font-bold hover:bg-gray-300 transition-all"
           >
             Cancel
           </button>

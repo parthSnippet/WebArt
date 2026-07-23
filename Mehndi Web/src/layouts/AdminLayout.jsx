@@ -18,7 +18,7 @@ const navItems = [
 ];
 
 const AdminLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,102 +29,122 @@ const AdminLayout = () => {
     navigate('/login');
   };
 
-  return (
-    <div className="flex min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900">
-      {/* Sidebar */}
-      <aside
-        className={`${
-          sidebarOpen ? 'w-64' : 'w-20'
-        } transition-all duration-300 flex-shrink-0 bg-black/30 backdrop-blur-xl border-r border-white/10 flex flex-col`}
-      >
-        {/* Logo */}
-        <div className="p-4 border-b border-white/10 flex items-center gap-3">
-          <div className="bg-gradient-to-br from-pink-500 to-purple-600 p-2.5 rounded-xl flex-shrink-0">
-            <FaSpa className="text-xl text-white" />
+  const SidebarContent = () => (
+    <div className="flex flex-col h-full">
+      {/* Logo */}
+      <div className="p-4 border-b border-blue-100 flex items-center gap-3">
+        <div className="bg-blue-500 p-2.5 rounded-xl flex-shrink-0 shadow-lg">
+          <FaSpa className="text-xl text-white" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-gray-800 font-black text-lg leading-tight truncate">Mehndi Studio</p>
+          <p className="text-blue-600 text-xs flex items-center gap-1 font-semibold">
+            <FaCrown className="text-yellow-500" /> Admin Panel
+          </p>
+        </div>
+      </div>
+
+      {/* Nav Items */}
+      <nav className="flex-1 py-4 space-y-1 px-3 overflow-y-auto">
+        {navItems.map(({ path, icon: Icon, label }) => {
+          const active = location.pathname === path;
+          return (
+            <Link
+              key={path}
+              to={path}
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all group ${
+                active
+                  ? 'bg-blue-500 text-white shadow-md'
+                  : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700'
+              }`}
+            >
+              <Icon className={`text-lg flex-shrink-0 ${active ? 'text-white' : 'text-blue-500'}`} />
+              <span className="font-semibold text-sm flex-1 truncate">{label}</span>
+              {active && <FaChevronRight className="text-xs text-white" />}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* User + Logout */}
+      <div className="p-4 border-t border-blue-100">
+        <div className="flex items-center gap-3 mb-3 px-1">
+          <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-md text-sm">
+            {user?.name?.[0]?.toUpperCase()}
           </div>
-          {sidebarOpen && (
-            <div>
-              <p className="text-white font-black text-lg leading-tight">Mehndi Studio</p>
-              <p className="text-pink-300 text-xs flex items-center gap-1">
-                <FaCrown className="text-yellow-400" /> Admin Panel
-              </p>
-            </div>
-          )}
+          <div className="overflow-hidden min-w-0">
+            <p className="text-gray-800 font-semibold text-sm truncate">{user?.name}</p>
+            <p className="text-gray-500 text-xs flex items-center gap-1">
+              <FaStar className="text-yellow-500 text-xs" /> Admin
+            </p>
+          </div>
         </div>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all font-semibold text-sm"
+        >
+          <FaSignOutAlt className="flex-shrink-0" />
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  );
 
-        {/* Nav Items */}
-        <nav className="flex-1 py-4 space-y-1 px-2">
-          {navItems.map(({ path, icon: Icon, label }) => {
-            const active = location.pathname === path;
-            return (
-              <Link
-                key={path}
-                to={path}
-                className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all group ${
-                  active
-                    ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/30'
-                    : 'text-white/70 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                <Icon className={`text-lg flex-shrink-0 ${active ? 'text-white' : 'text-pink-400'}`} />
-                {sidebarOpen && (
-                  <>
-                    <span className="font-semibold flex-1">{label}</span>
-                    {active && <FaChevronRight className="text-xs" />}
-                  </>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+  return (
+    <div className="flex min-h-screen bg-slate-50">
 
-        {/* User + Logout */}
-        <div className="p-4 border-t border-white/10">
-          {sidebarOpen && (
-            <div className="flex items-center gap-3 mb-3 px-2">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0">
-                {user?.name?.[0]?.toUpperCase()}
-              </div>
-              <div className="overflow-hidden">
-                <p className="text-white font-semibold text-sm truncate">{user?.name}</p>
-                <p className="text-white/50 text-xs flex items-center gap-1">
-                  <FaStar className="text-yellow-400 text-xs" /> Admin
-                </p>
-              </div>
-            </div>
-          )}
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-red-400 hover:bg-red-500/20 transition-all"
-          >
-            <FaSignOutAlt className="flex-shrink-0" />
-            {sidebarOpen && <span className="font-semibold">Logout</span>}
-          </button>
-        </div>
+      {/* ── DESKTOP SIDEBAR (always visible, lg+) ── */}
+      <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-blue-100 shadow-sm fixed left-0 top-0 h-screen z-30">
+        <SidebarContent />
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* ── MOBILE DRAWER OVERLAY ── */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* ── MOBILE SIDEBAR DRAWER ── */}
+      <aside
+        className={`fixed left-0 top-0 h-screen w-64 bg-white border-r border-blue-100 shadow-2xl z-50 lg:hidden transition-transform duration-300 ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <SidebarContent />
+      </aside>
+
+      {/* ── MAIN CONTENT ── */}
+      <div className="flex-1 flex flex-col lg:ml-64 min-w-0">
+
         {/* Top Bar */}
-        <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center gap-4">
+        <header className="bg-white shadow-sm border-b border-blue-100 px-4 md:px-6 py-3 flex items-center gap-3 sticky top-0 z-20">
+          {/* Hamburger — mobile only */}
           <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white/70 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/10"
+            onClick={() => setMobileOpen(true)}
+            className="lg:hidden text-gray-600 hover:text-blue-600 p-2 rounded-xl hover:bg-blue-50 transition-colors"
           >
-            {sidebarOpen ? <FaTimes /> : <FaBars />}
+            <FaBars className="text-xl" />
           </button>
-          <h1 className="text-white font-bold text-lg">
+
+          <h1 className="text-gray-800 font-bold text-lg truncate">
             {navItems.find((n) => n.path === location.pathname)?.label || 'Admin Panel'}
           </h1>
-          <div className="ml-auto">
-            <Link to="/" className="text-white/60 hover:text-white text-sm transition-colors">
-              ← View Site
+
+          <div className="ml-auto flex items-center gap-2">
+            <Link
+              to="/"
+              className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1.5 px-3 py-2 rounded-xl hover:bg-blue-50 transition-colors"
+            >
+              ← <span className="hidden sm:inline">View Site</span>
             </Link>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <Outlet />
         </main>
       </div>

@@ -1,117 +1,107 @@
-import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp, FaHeart, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp, FaHeart, FaPhone, FaEnvelope, FaMapMarkerAlt, FaSpa } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900 text-white border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Section */}
-          <div className="col-span-1 md:col-span-2">
-            <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-4">
-              Mehndi Studio ✨
-            </h3>
-            <p className="text-white/70 leading-relaxed mb-6">
-              Experience the perfect blend of traditional artistry and modern elegance. 
+    <footer className="bg-blue-600 text-white">
+
+      {/* Main Footer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          {/* Brand */}
+          <div className="sm:col-span-2 lg:col-span-2">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-white/20 p-2.5 rounded-xl">
+                <FaSpa className="text-xl text-white" />
+              </div>
+              <h3 className="text-2xl font-black text-white">Mehndi Studio</h3>
+            </div>
+            <p className="text-blue-100 leading-relaxed text-sm max-w-sm mb-6">
+              Experience the perfect blend of traditional artistry and modern elegance.
               Our expert artists bring your beauty vision to life with premium Mehndi and nail art services.
             </p>
-            <div className="flex gap-4">
-              <a 
-                href="#" 
-                className="bg-white/10 backdrop-blur-xl hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 p-3 rounded-xl transition-all duration-300 hover:scale-110 border border-white/20"
-                aria-label="Facebook"
-              >
-                <FaFacebook className="text-xl" />
-              </a>
-              <a 
-                href="#" 
-                className="bg-white/10 backdrop-blur-xl hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 p-3 rounded-xl transition-all duration-300 hover:scale-110 border border-white/20"
-                aria-label="Instagram"
-              >
-                <FaInstagram className="text-xl" />
-              </a>
-              <a 
-                href="#" 
-                className="bg-white/10 backdrop-blur-xl hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 p-3 rounded-xl transition-all duration-300 hover:scale-110 border border-white/20"
-                aria-label="Twitter"
-              >
-                <FaTwitter className="text-xl" />
-              </a>
-              <a 
-                href="#" 
-                className="bg-white/10 backdrop-blur-xl hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 p-3 rounded-xl transition-all duration-300 hover:scale-110 border border-white/20"
-                aria-label="WhatsApp"
-              >
-                <FaWhatsapp className="text-xl" />
-              </a>
+            <div className="flex gap-3">
+              {[
+                { icon: FaFacebook, label: 'Facebook' },
+                { icon: FaInstagram, label: 'Instagram' },
+                { icon: FaTwitter, label: 'Twitter' },
+                { icon: FaWhatsapp, label: 'WhatsApp' },
+              ].map(({ icon: Icon, label }) => (
+                <a
+                  key={label}
+                  href="#"
+                  aria-label={label}
+                  className="bg-white/15 hover:bg-white/30 p-2.5 rounded-xl transition-all duration-200 hover:scale-110"
+                >
+                  <Icon className="text-lg text-white" />
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-bold text-pink-300 mb-4">
+            <h4 className="text-white font-bold text-base mb-4 pb-2 border-b border-white/20">
               Quick Links
             </h4>
-            <ul className="space-y-3">
-              <li>
-                <a href="/designs" className="text-white/70 hover:text-pink-300 transition-colors flex items-center gap-2">
-                  → Browse Designs
-                </a>
-              </li>
-              <li>
-                <a href="/about" className="text-white/70 hover:text-pink-300 transition-colors flex items-center gap-2">
-                  → About Us
-                </a>
-              </li>
-              <li>
-                <a href="/contact" className="text-white/70 hover:text-pink-300 transition-colors flex items-center gap-2">
-                  → Contact
-                </a>
-              </li>
-              <li>
-                <a href="/appointments" className="text-white/70 hover:text-pink-300 transition-colors flex items-center gap-2">
-                  → My Bookings
-                </a>
-              </li>
+            <ul className="space-y-2.5">
+              {[
+                { to: '/designs', label: 'Browse Designs' },
+                { to: '/', label: 'About Us' },
+                { to: '/', label: 'Contact' },
+                { to: '/appointments', label: 'My Bookings' },
+              ].map(({ to, label }) => (
+                <li key={label}>
+                  <Link
+                    to={to}
+                    className="text-blue-100 hover:text-white text-sm flex items-center gap-2 transition-colors group"
+                  >
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h4 className="text-lg font-bold text-pink-300 mb-4">
+            <h4 className="text-white font-bold text-base mb-4 pb-2 border-b border-white/20">
               Contact Us
             </h4>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-white/70">
-                <FaPhone className="text-pink-400 mt-1" />
+              <li className="flex items-start gap-3 text-blue-100 text-sm">
+                <FaPhone className="text-white mt-0.5 flex-shrink-0" />
                 <span>+91 98765 43210</span>
               </li>
-              <li className="flex items-start gap-3 text-white/70">
-                <FaEnvelope className="text-pink-400 mt-1" />
-                <span>info@mehndi studio.com</span>
+              <li className="flex items-start gap-3 text-blue-100 text-sm">
+                <FaEnvelope className="text-white mt-0.5 flex-shrink-0" />
+                <span className="break-all">info@mehndi-studio.com</span>
               </li>
-              <li className="flex items-start gap-3 text-white/70">
-                <FaMapMarkerAlt className="text-pink-400 mt-1" />
+              <li className="flex items-start gap-3 text-blue-100 text-sm">
+                <FaMapMarkerAlt className="text-white mt-0.5 flex-shrink-0" />
                 <span>123 Beauty Street, Fashion District, City</span>
               </li>
             </ul>
           </div>
+
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/10 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-white/60 text-sm flex items-center gap-2">
-              Made with <FaHeart className="text-pink-400 animate-pulse" /> © 2024 Mehndi Studio. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-sm text-white/60">
-              <a href="/privacy" className="hover:text-pink-300 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-pink-300 transition-colors">Terms of Service</a>
-            </div>
+      <div className="border-t border-white/20 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-blue-100">
+          <p className="flex items-center gap-1.5">
+            Made with <FaHeart className="text-red-300 animate-pulse" /> © 2024 Mehndi Studio
+          </p>
+          <div className="flex gap-5">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>
+
     </footer>
   );
 };

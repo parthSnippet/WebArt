@@ -33,13 +33,8 @@ import AdminCategories from './pages/admin/AdminCategories';
 import AdminUsers from './pages/admin/AdminUsers';
 
 const PublicLayout = ({ children }) => {
-  const { isDark } = useTheme();
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDark
-        ? 'bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900'
-        : 'bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100'
-    }`}>
+    <div className="public-layout min-h-screen transition-colors duration-300" style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #f0f9ff 100%)', minHeight: '100vh' }}>
       <Navbar />
       <main>{children}</main>
       <Footer />
@@ -66,7 +61,7 @@ function AppContent() {
         <Route path="/profile" element={<ProtectedRoute><PublicLayout><UserProfile /></PublicLayout></ProtectedRoute>} />
 
         {/* Admin Routes (sidebar layout) */}
-        <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
+        <Route path="/admin" element={<ProtectedRoute adminOnly><div className="admin-layout" style={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}><AdminLayout /></div></ProtectedRoute>}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="designs" element={<AdminDesigns />} />
           <Route path="designs/new" element={<DesignForm />} />

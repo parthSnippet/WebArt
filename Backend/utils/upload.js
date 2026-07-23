@@ -57,87 +57,41 @@ export const upload = multer({
   fileFilter
 });
 
-// Upload to Cloudinary (production-ready)
 export const uploadToCloudinary = async (filePath, folder = 'mehndi-designs') => {
   try {
-    console.log('💾 Upload: Processing file upload to Cloudinary:', filePath);
-    
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      throw new Error('File not found');
-    }
-    
+    if (!fs.existsSync(filePath)) throw new Error('File not found');
+
     const result = await cloudinary.uploader.upload(filePath, {
       folder: `mehndi-booking/${folder}`,
       resource_type: 'auto',
       transformation: [
-        { width: 1200, height: 900, crop: 'limit' }, // Limit max size
-        { quality: 'auto:good' }, // Optimize quality
-        { fetch_format: 'auto' } // Auto format (WebP when supported)
+        { width: 1200, height: 900, crop: 'limit' },
+        { quality: 'auto:good' },
+        { fetch_format: 'auto' }
       ],
       use_filename: true,
       unique_filename: true
     });
-    
-    // Delete temporary file after successful upload
-    try {
-      fs.unlinkSync(filePath);
-      console.log('🗑️ Temporary file deleted:', filePath);
-    } catch (deleteError) {
-      console.warn('⚠️ Could not delete temporary file:', deleteError.message);
-    }
-    
-    console.log('✅ Upload successful:', {
-      public_id: result.public_id,
-      secure_url: result.secure_url,
-      format: result.format,
-      bytes: result.bytes
-    });
-    
+
+    try { fs.unlinkSync(filePath); } catch {}
+
     return {
       secure_url: result.secure_url,
       public_id: result.public_id,
       format: result.format,
       bytes: result.bytes
     };
-    
   } catch (error) {
-    console.error('❌ Cloudinary upload error:', error);
-    
-    // Clean up temporary file on error
-    try {
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    } catch (cleanupError) {
-      console.warn('⚠️ Could not clean up file on error:', cleanupError.message);
-    }
-    
+    try { if (fs.existsSync(filePath)) fs.unlinkSync(filePath); } catch {}
     throw new Error(`Upload failed: ${error.message}`);
   }
 };
 
-// Delete from Cloudinary
 export const deleteFromCloudinary = async (publicId) => {
   try {
-    if (!publicId) {
-      console.warn('⚠️ No public_id provided for deletion');
-      return;
-    }
-    
-    console.log('🗑️ Deleting from Cloudinary:', publicId);
-    
-    const result = await cloudinary.uploader.destroy(publicId);
-    
-    if (result.result === 'ok') {
-      console.log('✅ Successfully deleted from Cloudinary:', publicId);
-    } else {
-      console.warn('⚠️ Cloudinary deletion result:', result);
-    }
-    
-    return result;
+    if (!publicId) return;
+    await cloudinary.uploader.destroy(publicId);
   } catch (error) {
-    console.error('❌ Cloudinary deletion error:', error);
     throw new Error(`Deletion failed: ${error.message}`);
   }
 };
